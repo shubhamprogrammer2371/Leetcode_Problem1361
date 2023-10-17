@@ -1,0 +1,30 @@
+bool validateBinaryTreeNodes(int n, int* leftChild, int leftChildSize, int* rightChild, int rightChildSize){
+	(void)leftChildSize;
+	(void)rightChildSize;
+	int parents[n];
+	memset(&parents, -1, sizeof(parents));
+	int remainNode = n;
+	for (int curNode = 0; curNode < n; curNode += 1)
+    {
+		if (-1 == leftChild[curNode] && -1 == rightChild[curNode])
+			continue;
+		int curNodeRoot = curNode;
+		while (parents[curNodeRoot] != -1)
+			curNodeRoot = parents[curNodeRoot];
+		if (leftChild[curNode] != -1)
+        {
+			if ((parents[leftChild[curNode]] != -1) || (leftChild[curNode] == curNodeRoot))
+				return false;
+			parents[ leftChild[curNode] ] = curNode;
+			remainNode -= 1;
+		}
+		if (rightChild[curNode] != -1)
+        {
+			if ((parents[rightChild[curNode]] != -1) || (rightChild[curNode] == curNodeRoot))
+				return false;
+			parents[ rightChild[curNode] ] = curNode;
+			remainNode -= 1;
+		}
+	}
+	return (1 == remainNode);
+}
